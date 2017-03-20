@@ -1,0 +1,5 @@
+*.pdsbak
+*.workspace
+build/
+dist/
+nbproject/private/
