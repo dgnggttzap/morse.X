@@ -1,5 +1,6 @@
 *.pdsbak
 *.workspace
+*.obj
 build/
 dist/
 nbproject/private/
