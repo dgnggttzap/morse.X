@@ -1,3 +1,6 @@
+/*Morse Roubatel et Glassey*/
+
+
 #include <xc.h>
 #include <stdio.h>
 #include <pic18f25k22.h>
@@ -50,9 +53,33 @@ void initialiseHardware() {
     
     initialiseUART1();
     
-    // ...
-    // À faire.
-    // ...
+    // Désactive les entrées analogiques
+    ANSELA = 0;
+    ANSELB = 0;
+    ANSELC = 0;
+   
+    // Configure le port RB1 en entrée
+    TRISBbits.RB1 = 1;
+    
+    // Active les interruptions de haute et de basse priorité:
+    RCONbits.IPEN = 1;
+    INTCONbits.GIEH = 1;
+    INTCONbits.GIEL = 1;
+   
+    INTCON3bits.INT1E = 1;          // Active les interruptions.
+    INTCON3bits.INT1IP = 0;         // Basse priorité.
+    
+    // Temporisateur 1 -- à Fosc=1MHz, 20ms = compte jusqu'à 5000
+    T1CONbits.TMR1CS = 0;       // Source: FOSC / 4
+    T1CONbits.T1CKPS = 0;       // Diviseur de fréquence TPS = 4
+    T1CONbits.T1RD16 = 1;       // Temporisateur de 16 bits.
+    T1CONbits.TMR1ON = 1;       // Active le temporisateur 1    
+    
+    PIE1bits.TMR1IE = 1;        // Active les interruptions du T1 ...
+    IPR1bits.TMR1IP = 0;        // ... de basse priorité
+    
+    
+    
 }
 
 /**

@@ -21,8 +21,30 @@ static char filePleine = 0;  // La file est initialement vide.
  * Si il y a de la place dans la file, enfile un caractère.
  * @param c Le caractère.
  */
+
+/**
+ * Indique si la file est vide.
+ */
+char fileEstVide() {
+    // Si la pointeur de sortie est égal u pointeur d'entrée et que le pointeur plein vaut 0, on renvoir 255 sinon 0
+    return ((fileSortie==fileEntree) && filePleine == 0) ? 255 : 0 ; 
+}
+/**
+ * Indique si la file est pleine.
+ */
+char fileEstPleine() {
+         
+   return (filePleine == 255) ? 255 : 0; // Si le pointeur filePleine vaut 255 on renvoie 255 sinon 0
+        
+}
+
 void fileEnfile(char c) {
-    // À implémenter.
+    
+    if (!fileEstPleine()){ // test pour savoir s'il y a de la place
+        file[fileEntree]=c;// attribution du caractère à l'adresse pointeur
+        filePleine = (fileEntree == FILE_TAILLE-1) ? 255 : 0; //Si le pointeur entrée est égal à la taille-1 (on commence les adresses à 0), plein vaut 255 sinon 0
+        fileEntree=((fileEntree+1)%FILE_TAILLE); // On incrémente le pointeur d'entrée
+    }
 }
 
 /**
@@ -30,31 +52,29 @@ void fileEnfile(char c) {
  * @return Le caractère défilé, ou 0 si la file est vide.
  */
 char fileDefile() {
-    // À implémenter.
-    return 0;
-}
+    char data;
+    if (!fileEstVide()){            //On vérifie que la file n'est pas vide
+        data=file[fileSortie];      //On renvoie la valeur stockée à l'adresse du pointeur
+                fileSortie=((fileSortie+1)%FILE_TAILLE);       //On incrémente le pointeur de sortie
+                if (filePleine == 255) { // Si la file est pleine ...
+            filePleine = 0;                //... elle ne l'est plus
+        }
+                return data;       
+    }else{
+        return 0;
+    }
+}  
 
-/**
- * Indique si la file est vide.
- */
-char fileEstVide() {
-    // À implémenter.
-    return 0;
-}
 
-/**
- * Indique si la file est pleine.
- */
-char fileEstPleine() {
-    // À implémenter.
-    return 0;
-}
 
 /**
  * Vide et réinitialise la file.
  */
 void fileReinitialise() {
-    // À implémenter.
+    
+    fileEntree = 0; //On remet les pointeurs à 0: résultat la file est vide
+    fileSortie = 0; //On remet les pointeurs à 0: résultat la file est vide
+    filePleine = 0; //On remet les pointeurs à 0: résultat la file est vide
 }
 
 #ifdef TEST
